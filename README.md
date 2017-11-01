@@ -12,37 +12,61 @@ npm install one-config
 
 ## Getting Started
 
-Import and initialize one-config. Be sure to do this as early as possible in your server.
+Import and initialize one-config. Be sure to do this as early as possible in your server code.
 
 ```javascript
 require('one-config').initialize();
 ```
 
-Create a `one.config.js` file in your project's root directory. Optionally, add a `_server` field to store sensitive values. Values defined here will be merged into the config for server code and inaccessible to browser code.
+Create a `one.config.js` file in your project's root directory. You can also add an optional `SERVER` property to store sensitive values. These values will be merged into the config on the server, but not in the browser.
 
 ```javascript
 module.exports = {
   foo: 'bar'
-  _server: {
+  SERVER: {
     topSecretDatabaseKey: 'EFAC34A4',
   },
 };
 ```
 
-Explicitly inject the configuration into your HTML.
+Explicitly inject the initialization script into your HTML.
 
 ```javascript
-import { forBrowser } from 'one-config';
+const { getScript } = require('one-config');
 
 const html = `
   <html>
     <body>
       ...
-      ${forBrowser()}
+      ${getScript()}
       <!-- Other bundles that depend on configuration -->
     </body>
   </html>
 `;
+```
+
+or define the config globally yourself at build time...
+
+```javascript
+// webpack.config.js
+
+const { forBrowser } = require('one-config');
+const path = require('path');
+const config = forBrowser();
+
+fs.writeFileSync(
+  path.resolve(__dirname, 'build/client.json'),
+  JSON.stringify({ config })
+)
+
+module.exports = {
+  // ... other webpack config
+  resolve: {
+    alias: {
+      'one-config': path.resolve(__dirname, 'build/client.json'),
+    }
+  }
+}
 ```
 
 That's it! You can now import and access configuration from anywhere in your application.
@@ -54,37 +78,47 @@ import { config } from 'one-config'
 
 ## API
 
-### `extend(values: Object, dangerouslyApplyUpdates: Boolean = false)`
+#### `config: Object`
 
-Values are merged with the original config object. Like the original config object, `values` can contain an optional `_server` property.
+The raw config object. Can be imported anywhere on server or client.
 
-**NOTE**: By default, this method will not apply updates once `forBrowser` has been called. This behavior helps to ensure that values do not get out of sync between the browser and server, however, you can use the `dangerouslyApplyUpdates` argument to override this behavior.
+**NOTE**: Mutating this object may cause unexpected behavior.
+
+#### `extend(values: Object, dangerously: Boolean = false)`
+
+Values are merged with the original config object. Like the original config object, `values` can contain an optional `server` property.
+
+**NOTE**: By default, this method will not apply updates once `forBrowser` has been called. This behavior helps to ensure that values do not get out of sync between the browser and server, however, you can use the `dangerously` argument to override this behavior.
 
 
-### `forBrowser()`
+#### `forBrowser()`
 
-Returns a script tag to be injected into an HTML page. This script tag will assign a config object to the `window`
-so that values can be accessed in the browser.
+Returns the config object without the `SERVER` property. Use this function if you need to define the config globally yourself with Webpack's DefinePlugin or a Babel transform.
 
 
-### `freeze()`
+#### `freeze()`
 
 Prevents any updates from being applied via `extend` or `set`.
 
 
-### `get(key: String)`
+#### `get(key: String)`
 
 Gets the value at the specified `key`.
 
 
-### `initialize()`
+#### `getScript()`
+
+Returns an initialization script tag to be injected into an HTML page.
+
+
+#### `initialize()`
 
 Initializes the config object for both server and browser environments.
 
 **NOTE**: This method should be called in your server's entry point as soon as possible.
 
 
-### `set(key: String, value: <any>)`
+#### `set(key: String, value: <any>)`
 
 Sets a `value` at the specified `key`.
 
@@ -100,9 +134,9 @@ Sets a `value` at the specified `key`.
 </details>
 
 <details>
-  <summary>Is it safe to store sensitive values in the `_server` property of my config file?</summary>
+  <summary>Is it safe to store sensitive values in the `server` property of my config file?</summary>
 
-  Yes! Any values defined in the `_server` field are excluded when you use from the config returned by `forBrowser`. Furthermore, `_server` values will not get bundled into your client-side code if you import `one-config`, because config is required dynamically on the server.
+  Yes! Any values defined in the `server` field are excluded when you use from the config returned by `forBrowser`. Furthermore, `server` values will not get bundled into your client-side code if you import `one-config`, because config is required dynamically on the server.
 </details>
 
 <details>
