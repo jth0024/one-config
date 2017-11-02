@@ -5,8 +5,8 @@ module.exports = () => {
   const browserConfig = JSON.stringify(forBrowser());
 
   return `
-    if (!window[${constants.globalKey}]) {
-      ${constants.globalKey} = ${browserConfig};
+    if (!window['${constants.globalKey}']) {
+      window['${constants.globalKey}'] = ${browserConfig};
     }
   `;
 };
