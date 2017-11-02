@@ -15,8 +15,7 @@ module.exports = (filePath = constants.fileName) => {
 
   if (!fs.existsSync(file)) return;
 
-  const contents = fs.readFileSync(file, 'utf8');
-  const config = eval(contents);
+  const config = dynamicRequire(file);
 
   if (isObject(config)) {
     global[constants.globalKey] = config;
