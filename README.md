@@ -1,6 +1,6 @@
 # one-config
 
-A single source of configuration for your server and browser code.
+One config file for your server and browser code.
 
 
 ## Installation
@@ -18,12 +18,12 @@ Import and initialize one-config. Be sure to do this as early as possible in you
 require('one-config').initialize();
 ```
 
-Create a `one.config.js` file in your project's root directory. You can also add an optional `SERVER` property to store sensitive values. These values will be merged into the config on the server, but not in the browser.
+Create a `one.config.js` file in your project's root directory. You can optionally add a `server` property to store sensitive values. These values will be merged into the config on the server, but not in the browser.
 
 ```javascript
 module.exports = {
   foo: 'bar'
-  SERVER: {
+  server: {
     topSecretDatabaseKey: 'EFAC34A4',
   },
 };
@@ -45,82 +45,56 @@ const html = `
 `;
 ```
 
-or define the config globally yourself at build time...
-
-```javascript
-// webpack.config.js
-
-const { forBrowser } = require('one-config');
-const path = require('path');
-const config = forBrowser();
-
-fs.writeFileSync(
-  path.resolve(__dirname, 'build/client.json'),
-  JSON.stringify({ config })
-)
-
-module.exports = {
-  // ... other webpack config
-  resolve: {
-    alias: {
-      'one-config': path.resolve(__dirname, 'build/client.json'),
-    }
-  }
-}
-```
-
 That's it! You can now import and access configuration from anywhere in your application.
 
 ```javascript
-import { config } from 'one-config'
+const config = require('one-config').config();
 ```
 
 
 ## API
 
-#### `config: Object`
+##### `config()`
 
-The raw config object. Can be imported anywhere on server or client.
+* Returns a copy of the raw config object. Can be used anywhere on server or client.
+* **NOTE**: Mutating this object will not affect the underlying config. Use `extend` or `set` to update the config.
 
-**NOTE**: Mutating this object may cause unexpected behavior.
+##### `extend(values: Object, dangerously: Boolean = false)`
 
-#### `extend(values: Object, dangerously: Boolean = false)`
-
-Values are merged with the original config object. Like the original config object, `values` can contain an optional `server` property.
-
-**NOTE**: By default, this method will not apply updates once `forBrowser` has been called. This behavior helps to ensure that values do not get out of sync between the browser and server, however, you can use the `dangerously` argument to override this behavior.
+* Values are merged with the original config object. Like the original config object, `values` can contain an optional `server` property.
+* **NOTE**: By default, this method will not apply updates once `forBrowser` has been called. This behavior helps to ensure that values do not get out of sync between the browser and server, however, you can use the `dangerously` argument to override this behavior.
 
 
-#### `forBrowser()`
+##### `forBrowser()`
 
-Returns the config object without the `SERVER` property. Use this function if you need to define the config globally yourself with Webpack's DefinePlugin or a Babel transform.
-
-
-#### `freeze()`
-
-Prevents any updates from being applied via `extend` or `set`.
+* Returns the raw config object without the `server` property. Use this function when you can't inject an initialization script into HTML and need to provide the config globally yourself using Webpack or a Babel.
 
 
-#### `get(key: String)`
+##### `freeze()`
 
-Gets the value at the specified `key`.
-
-
-#### `getScript()`
-
-Returns an initialization script tag to be injected into an HTML page.
+* Prevents any updates from being applied via `extend` or `set`.
 
 
-#### `initialize()`
+##### `get(key: String)`
 
-Initializes the config object for both server and browser environments.
-
-**NOTE**: This method should be called in your server's entry point as soon as possible.
+* Gets the value at the specified `key`.
 
 
-#### `set(key: String, value: <any>)`
+##### `getScript()`
 
-Sets a `value` at the specified `key`.
+* Returns an initialization script tag to be injected into an HTML page.
+
+
+##### `initialize(filePath: String = './one.config.js')`
+
+* Initializes the config object for both server and browser environments. You can provide a custom `filePath` if you'd like to change the name or location of your config file.
+* **NOTE**: This method should be called in your server's entry point as soon as possible.
+
+
+##### `set(key: String, value: <any>)`
+
+* Sets a `value` at the specified `key`.
+
 
 ## FAQ
 
@@ -140,7 +114,35 @@ Sets a `value` at the specified `key`.
 </details>
 
 <details>
-  <summary>Why is the configuration object `undefined` when I import it?</summary>
+  <summary>I don't have control over the HTML returned from my server, can I still use one-config?</summary>
+
+  Sure! You can simply call `forBrowser` and use Webpack or Babel to define the config globally yourself. Here's an example.
+
+  ```javascript
+  // webpack.config.js
+
+  const { forBrowser } = require('one-config');
+  const path = require('path');
+  const config = forBrowser();
+
+  fs.writeFileSync(
+    path.resolve(__dirname, 'build/client.json'),
+    JSON.stringify({ config })
+  )
+
+  module.exports = {
+    // ... other webpack config
+    resolve: {
+      alias: {
+        'one-config': path.resolve(__dirname, 'build/client.json'),
+      }
+    }
+  }
+  ```
+</details>
+
+<details>
+  <summary>Why does `config` return an empty object?</summary>
 
   Remember, you must import and configure one-config as early as possible in your server's entry file. Otherwise, you may be accessing one-config before it has been properly initialized.
 </details>

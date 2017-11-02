@@ -1,16 +1,17 @@
 const isObject = require('lodash/isObject');
 const constants = require('../utils/constants');
+const dynamicRequire = require('../utils/dynamic-require');
 
 /* eslint-disable no-eval */
-module.exports = () => {
+module.exports = (filePath = constants.fileName) => {
   if (typeof window !== 'undefined') return;
 
-  const fs = eval('require("fs")');
-  const path = eval('require("path")');
+  const fs = dynamicRequire('fs');
+  const path = dynamicRequire('path');
 
   if (!fs || !path) return;
 
-  const file = path.resolve(process.cwd(), constants.fileName);
+  const file = path.resolve(process.cwd(), filePath);
 
   if (!fs.existsSync(file)) return;
 

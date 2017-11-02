@@ -1,13 +1,13 @@
 {
   "name": "one-config",
-  "version": "1.0.0",
-  "description": "A single source of configuration for your server and browser code.",
+  "version": "1.0.0-beta",
+  "description": "One config file for your server and browser code.",
   "main": "dist/index.js",
   "author": "Jordan Hurt",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "babel src --out-dir dist",
+    "build": "babel src --out-dir dist --ignore test.js",
     "lint": "eslint src",
     "prerelease": "npm run test && npm run lint && npm run build",
     "release": "npm publish",
