@@ -1,5 +1,5 @@
 const path = require('path');
-const dynamicRequire = require('../dynamic-require');
+const dynamicRequire = require('../dynamicRequire');
 
 describe('utils/dynamic-require', () => {
   test('it returns null for an invalid module', () => {

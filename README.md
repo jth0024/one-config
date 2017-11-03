@@ -18,7 +18,7 @@ Import and initialize one-config. Be sure to do this as early as possible in you
 require('one-config').initialize();
 ```
 
-Create a `one.config.js` file in your project's root directory. You can optionally add a `server` property to store sensitive values. These values will be merged into the config on the server, but not in the browser.
+Create a `one.config.js` file in your project's root directory. You can optionally add a `server` property to store sensitive values. This property will not be available in the browser.
 
 ```javascript
 module.exports = {
@@ -62,7 +62,7 @@ const config = require('one-config').config();
 ##### `extend(values: Object, dangerously: Boolean = false)`
 
 * Values are merged with the original config object. Like the original config object, `values` can contain an optional `server` property.
-* **NOTE**: By default, this method will not apply updates once `forBrowser` has been called. This behavior helps to ensure that values do not get out of sync between the browser and server, however, you can use the `dangerously` argument to override this behavior.
+* **NOTE**: By default, this method will not apply updates in a browser environment or after `forBrowser` has been called. Use the `dangerously` argument to override this behavior. This method will not apply updates after `freeze` has been called.
 
 
 ##### `forBrowser()`
@@ -85,15 +85,15 @@ const config = require('one-config').config();
 * Returns an initialization script tag to be injected into an HTML page.
 
 
-##### `initialize(filePath: String = './one.config.js')`
+##### `initialize(source: (String|Object) = './one.config.js')`
 
-* Initializes the config object for both server and browser environments. You can provide a custom `filePath` if you'd like to change the name or location of your config file.
+* Initializes the config for both server and browser environments. You can provide the optional `source` argument if you'd like to customize the file location or build an object at runtime.
 * **NOTE**: This method should be called in your server's entry point as soon as possible.
 
 
-##### `set(key: String, value: <any>)`
+##### `set(key: String, value: <any>, dangerously: Boolean = false)`
 
-* Sets a `value` at the specified `key`.
+* Sets a `value` at the specified `key`. See `extend` for an explanation of `dangerously`.
 
 
 ## FAQ

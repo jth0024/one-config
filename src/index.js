@@ -1,11 +1,19 @@
-const config = require('./lib/config');
-const forBrowser = require('./lib/for-browser');
-const getScript = require('./lib/get-script');
-const initialize = require('./lib/initialize');
+const config = require('./config');
+const extend = require('./extend');
+const forBrowser = require('./forBrowser');
+const freeze = require('./freeze');
+const get = require('./get');
+const getScript = require('./getScript');
+const initialize = require('./initialize');
+const set = require('./set');
 
 module.exports = {
   config,
+  extend,
   forBrowser,
+  freeze,
+  get,
   getScript,
   initialize,
+  set,
 };

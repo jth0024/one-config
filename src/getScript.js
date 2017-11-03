@@ -1,5 +1,5 @@
-const forBrowser = require('./for-browser');
-const constants = require('../utils/constants');
+const forBrowser = require('./forBrowser');
+const constants = require('./utils/constants');
 
 module.exports = () => {
   const browserConfig = JSON.stringify(forBrowser());

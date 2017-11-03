@@ -1,5 +1,5 @@
 /* eslint-disable no-eval, no-console */
-module.exports = (name) => {
+module.exports = (name = '') => {
   try {
     const result = eval(`require("${name}")`);
     return result;

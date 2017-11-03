@@ -1,6 +1,6 @@
 {
   "name": "one-config",
-  "version": "1.0.0-beta3",
+  "version": "1.0.0-beta4",
   "description": "One config file for your server and browser code.",
   "main": "dist/index.js",
   "author": "Jordan Hurt",
@@ -15,19 +15,20 @@
     "test:watch": "jest --watch"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-latest": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "eslint": "^4.9.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "jest": "^21.2.1",
-    "rimraf": "^2.6.2",
-    "sinon": "^4.0.2"
+    "babel-cli": "6.26.0",
+    "babel-eslint": "8.0.1",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-preset-latest": "6.24.1",
+    "babel-preset-stage-2": "6.24.1",
+    "eslint": "4.9.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "jest": "21.2.1",
+    "rimraf": "2.6.2",
+    "semantic-release": "8.2.0",
+    "sinon": "4.0.2"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "4.17.4"
   }
 }
