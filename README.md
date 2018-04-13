@@ -150,7 +150,7 @@ const config = require('one-config').config();
     // ... other webpack config
     resolve: {
       alias: {
-        'one-config': path.resolve(__dirname, './one-config.json'),
+        'one-config': path.resolve(__dirname, './one-config.js'),
       }
     }
   }
