@@ -117,24 +117,40 @@ const config = require('one-config').config();
   <summary>I don't have control over the HTML returned from my server, can I still use one-config?</summary>
 
   Sure! You can simply call `forBrowser` and use Webpack or Babel to define the config globally yourself. Here's an example.
+  ```javascript
+  // one-config.js
+  const config = require('./one-config.json');
+  
+  module.exports = {
+    config() {
+      return config;
+    },
+  };
+  ```
 
   ```javascript
   // webpack.config.js
-
-  const { forBrowser } = require('one-config');
+  
+  const fs = require('fs');
+  const { forBrowser, initialize } = require('one-config');
   const path = require('path');
+  
+  // Initialize the config
+  initialize();
+  
+  // Get the browser config
   const config = forBrowser();
 
   fs.writeFileSync(
-    path.resolve(__dirname, 'build/client.json'),
-    JSON.stringify({ config })
+    path.resolve(__dirname, './one-config.json'),
+    JSON.stringify(config)
   )
 
   module.exports = {
     // ... other webpack config
     resolve: {
       alias: {
-        'one-config': path.resolve(__dirname, 'build/client.json'),
+        'one-config': path.resolve(__dirname, './one-config.json'),
       }
     }
   }
