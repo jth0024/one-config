@@ -67,7 +67,12 @@ const config = require('one-config').config();
 
 ##### `forBrowser()`
 
-* Returns the raw config object without the `server` property. Use this function when you can't inject an initialization script into HTML and need to provide the config globally yourself using Webpack or a Babel.
+* Returns the raw config object without the `server` property. Use this function when you can't inject an initialization script into HTML and need to provide the config value globally yourself using Webpack or a Babel.
+
+
+##### `forFile()`
+
+* Returns a string representation of the **oneConfig** module to write to a file. Use this function when you can't inject an initialization script into HTML and need to provide the config globally yourself using Webpack or a Babel.  Since this module is meant to be used in the browser, it only supports the **config** and **get** methods, and the `server` property will be excluded.
 
 
 ##### `freeze()`
@@ -116,34 +121,22 @@ const config = require('one-config').config();
 <details>
   <summary>I don't have control over the HTML returned from my server, can I still use one-config?</summary>
 
-  Sure! You can simply call `forBrowser` and use Webpack or Babel to define the config globally yourself. Here's an example.
-  ```javascript
-  // one-config.js
-  const config = require('./one-config.json');
-  
-  module.exports = {
-    config() {
-      return config;
-    },
-  };
-  ```
+  Sure! You can simply call `forFile` and use Webpack or Babel to define the config globally yourself. Here's an example.
 
   ```javascript
   // webpack.config.js
-  
+
   const fs = require('fs');
-  const { forBrowser, initialize } = require('one-config');
+  const { forFile, initialize } = require('one-config');
   const path = require('path');
-  
+
   // Initialize the config
   initialize();
-  
-  // Get the browser config
-  const config = forBrowser();
 
+  // Write the module to a file
   fs.writeFileSync(
-    path.resolve(__dirname, './one-config.json'),
-    JSON.stringify(config)
+    path.resolve(__dirname, './one-config.js'),
+    forFile()
   )
 
   module.exports = {

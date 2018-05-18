@@ -1,6 +1,6 @@
 {
   "name": "one-config",
-  "version": "1.0.0-beta4",
+  "version": "1.0.0-beta5",
   "description": "One config file for your server and browser code.",
   "main": "dist/index.js",
   "author": "Jordan Hurt",
