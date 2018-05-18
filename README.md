@@ -72,7 +72,7 @@ const config = require('one-config').config();
 
 ##### `forFile()`
 
-* Returns a string representation of the **oneConfig** module to write to a file. Use this function when you can't inject an initialization script into HTML and need to provide the config globally yourself using Webpack or a Babel.  Since this module is meant to be used in the browser, it only supports the **config** and **get** methods, and the `server` property will be excluded.
+* Returns a string representation of the `oneConfig` module to write to a file. Use this function when you can't inject an initialization script into HTML and need to provide the config globally yourself using Webpack or a Babel.  Since this module is meant to be used in the browser, it only supports the `config` and `get` methods, and the `server` property will be excluded.
 
 
 ##### `freeze()`
@@ -115,7 +115,7 @@ const config = require('one-config').config();
 <details>
   <summary>Is it safe to store sensitive values in the `server` property of my config file?</summary>
 
-  Yes! Any values defined in the `server` field are excluded when you use from the config returned by `forBrowser`. Furthermore, `server` values will not get bundled into your client-side code if you import `one-config`, because config is required dynamically on the server.
+  Yes! Any values defined in the `server` field are excluded when you use the config returned by `forBrowser`, `forFile`, or `getScript`. Furthermore, `server` values will not get bundled into your client-side code if you import `one-config`, because config is required dynamically on the server.
 </details>
 
 <details>
