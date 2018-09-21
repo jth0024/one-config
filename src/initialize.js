@@ -1,10 +1,12 @@
 const isObject = require('lodash/isObject');
 const constants = require('./utils/constants');
 const dynamicRequire = require('./utils/dynamicRequire');
-const { getEnvironment, setInGlobal } = require('./utils/environment');
+const { getEnvironment, setHandlers, setInGlobal } = require('./utils/environment');
 
 /* eslint-disable no-eval */
-function initialize(source = constants.fileName) {
+function initialize(source = constants.fileName, handlers = {}) {
+  setHandlers(handlers);
+
   if (isObject(source)) {
     const config = initializeConfig(source);
     setInGlobal(constants.globalKey, config);
