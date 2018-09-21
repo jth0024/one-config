@@ -90,7 +90,7 @@ const config = require('one-config').config();
 * Returns an initialization script tag to be injected into an HTML page.
 
 
-##### `initialize(source: (String|Object) = './one.config.js', handlers: (Object) = {})`
+##### `initialize(source: (String|Object) = './one.config.js', handlers: Object = {})`
 
 * Initializes the config for both server and browser environments. You can provide the optional `source` argument if you'd like to customize the file location or build an object at runtime. You can also provide the optional `handlers` argument if you'd like to perform logging, connect to a custom database, or use a feature like HttpContext. Handlers should be an object with `get(key: String)` and `set(key: String, value: String)` functions.
 * **NOTE**: This method should be called in your server's entry point as soon as possible.

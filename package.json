@@ -1,6 +1,6 @@
 {
   "name": "one-config",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "One config file for your server and browser code.",
   "main": "dist/index.js",
   "author": "Jordan Hurt",
@@ -29,6 +29,6 @@
     "sinon": "4.0.2"
   },
   "dependencies": {
-    "lodash": "4.17.4"
+    "lodash": "4.17.11"
   }
 }
