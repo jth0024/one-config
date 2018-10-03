@@ -1,8 +1,9 @@
 /* eslint-disable no-eval, no-console */
-module.exports = (name = '') => {
+module.exports = (nameOrPath = '') => {
   try {
-    const result = eval(`require("${name}")`);
-    return result;
+    const escaped = nameOrPath.replace(/\\/g, '//');
+    const requireStatement = `require("${escaped}")`;
+    return eval(requireStatement);
   } catch (e) {
     return null;
   }

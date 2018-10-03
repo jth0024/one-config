@@ -16,4 +16,11 @@ describe('utils/dynamic-require', () => {
     const constants = dynamicRequire(path.resolve(__dirname, '../constants'));
     expect(constants).toBe(require.requireActual('../constants'));
   });
+
+  test('it escapes incorrectly formatted paths', () => {
+    const resolvedPath = path.resolve(__dirname, '../constants');
+    const badPath = resolvedPath.replace(/\//g, '\\');
+    const constants = dynamicRequire(badPath);
+    expect(constants).toBe(require.requireActual('../constants'));
+  });
 });

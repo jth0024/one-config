@@ -13,13 +13,14 @@ function initialize(source = constants.fileName, handlers = {}) {
     return;
   }
 
-  const { isBrowser } = getEnvironment();
-  if (isBrowser) return;
+  const { isServer } = getEnvironment();
 
-  const contents = parseFile(source, {});
-  const config = initializeConfig(contents);
+  if (isServer) {
+    const contents = parseFile(source, {});
+    const config = initializeConfig(contents);
 
-  setInGlobal(constants.globalKey, config);
+    setInGlobal(constants.globalKey, config);
+  }
 }
 
 function initializeConfig(config = {}) {
